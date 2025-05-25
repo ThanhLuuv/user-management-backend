@@ -32,7 +32,6 @@
 
 # CMD ["php-fpm"]
 
-
 FROM php:8.1
 
 # Cài extension PHP
@@ -56,6 +55,14 @@ COPY . .
 
 # Cài Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Clear và rebuild cache (QUAN TRỌNG)
+RUN php artisan config:clear && \
+    php artisan route:clear && \
+    php artisan view:clear && \
+    php artisan cache:clear && \
+    php artisan config:cache && \
+    php artisan route:cache
 
 # Phân quyền
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
