@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\UserController;
 // Public routes
 Route::get('health-check', fn () => response()->json(['status' => 'ok']));
 
-Route::get('/ci-test', function () {
+Route::get('/cicd-test', function () {
     return 'CI/CD is working!';
 });
 
