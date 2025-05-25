@@ -7,6 +7,11 @@ use App\Http\Controllers\Api\UserController;
 // Public routes
 Route::get('health-check', fn () => response()->json(['status' => 'ok']));
 
+Route::get('/ci-test', function () {
+    return 'CI/CD is working!';
+});
+
+
 // Auth routes (public)
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
