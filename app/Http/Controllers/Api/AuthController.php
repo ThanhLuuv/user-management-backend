@@ -69,7 +69,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => 'Server error. Please try again later.'
             ], 500);
         }
     }
