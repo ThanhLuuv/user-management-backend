@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     /**
      * Register new user
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -76,7 +76,7 @@ class AuthController extends Controller
 
     /**
      * Login user
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -109,7 +109,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Invalid credentials',
                 'errors' => $e->errors()
-            ], 401);
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -120,7 +120,7 @@ class AuthController extends Controller
 
     /**
      * Logout user
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
@@ -141,7 +141,7 @@ class AuthController extends Controller
 
     /**
      * Refresh authentication token
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function refresh()
@@ -163,7 +163,7 @@ class AuthController extends Controller
 
     /**
      * Get current authenticated user
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
@@ -184,7 +184,7 @@ class AuthController extends Controller
 
     /**
      * Change user password
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -197,7 +197,7 @@ class AuthController extends Controller
             ]);
 
             $this->authService->changePassword($validatedData);
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Password changed successfully'
@@ -219,7 +219,7 @@ class AuthController extends Controller
 
     /**
      * Request password reset
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -231,7 +231,7 @@ class AuthController extends Controller
             ]);
 
             $this->authService->requestPasswordReset($validatedData['email']);
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'If your email is registered, you will receive password reset instructions.'
@@ -253,7 +253,7 @@ class AuthController extends Controller
 
     /**
      * Verify email (placeholder for future implementation)
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -290,7 +290,7 @@ class AuthController extends Controller
 
     /**
      * Resend email verification
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function resendEmailVerification()
@@ -300,7 +300,7 @@ class AuthController extends Controller
             // 1. Check if user email is already verified
             // 2. Generate new verification token
             // 3. Send verification email
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Verification email sent successfully'
@@ -336,7 +336,7 @@ class AuthController extends Controller
 
 //     /**
 //      * Register new user
-//      * 
+//      *
 //      * @param Request $request
 //      * @return \Illuminate\Http\JsonResponse
 //      */
@@ -359,7 +359,7 @@ class AuthController extends Controller
 //             ]);
 
 //             $data = $this->authService->register($validatedData);
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'User registered successfully',
@@ -382,7 +382,7 @@ class AuthController extends Controller
 
 //     /**
 //      * Login user
-//      * 
+//      *
 //      * @param Request $request
 //      * @return \Illuminate\Http\JsonResponse
 //      */
@@ -395,7 +395,7 @@ class AuthController extends Controller
 //             ]);
 
 //             $data = $this->authService->login($validatedData);
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'Login successful',
@@ -418,14 +418,14 @@ class AuthController extends Controller
 
 //     /**
 //      * Logout user
-//      * 
+//      *
 //      * @return \Illuminate\Http\JsonResponse
 //      */
 //     public function logout()
 //     {
 //         try {
 //             $this->authService->logout();
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'Successfully logged out'
@@ -441,14 +441,14 @@ class AuthController extends Controller
 
 //     /**
 //      * Refresh authentication token
-//      * 
+//      *
 //      * @return \Illuminate\Http\JsonResponse
 //      */
 //     public function refresh()
 //     {
 //         try {
 //             $data = $this->authService->refresh();
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'Token refreshed successfully',
@@ -465,14 +465,14 @@ class AuthController extends Controller
 
 //     /**
 //      * Get current authenticated user
-//      * 
+//      *
 //      * @return \Illuminate\Http\JsonResponse
 //      */
 //     public function me()
 //     {
 //         try {
 //             $data = $this->authService->getCurrentUser();
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'User information retrieved successfully',
@@ -489,7 +489,7 @@ class AuthController extends Controller
 
 //     /**
 //      * Change user password
-//      * 
+//      *
 //      * @param Request $request
 //      * @return \Illuminate\Http\JsonResponse
 //      */
@@ -502,7 +502,7 @@ class AuthController extends Controller
 //             ]);
 
 //             $this->authService->changePassword($validatedData);
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'Password changed successfully'
@@ -524,7 +524,7 @@ class AuthController extends Controller
 
 //     /**
 //      * Request password reset
-//      * 
+//      *
 //      * @param Request $request
 //      * @return \Illuminate\Http\JsonResponse
 //      */
@@ -536,7 +536,7 @@ class AuthController extends Controller
 //             ]);
 
 //             $this->authService->requestPasswordReset($validatedData['email']);
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'If your email is registered, you will receive password reset instructions.'
@@ -558,7 +558,7 @@ class AuthController extends Controller
 
 //     /**
 //      * Verify email (placeholder for future implementation)
-//      * 
+//      *
 //      * @param Request $request
 //      * @return \Illuminate\Http\JsonResponse
 //      */
@@ -595,7 +595,7 @@ class AuthController extends Controller
 
 //     /**
 //      * Resend email verification
-//      * 
+//      *
 //      * @return \Illuminate\Http\JsonResponse
 //      */
 //     public function resendEmailVerification()
@@ -605,7 +605,7 @@ class AuthController extends Controller
 //             // 1. Check if user email is already verified
 //             // 2. Generate new verification token
 //             // 3. Send verification email
-            
+
 //             return response()->json([
 //                 'status' => 'success',
 //                 'message' => 'Verification email sent successfully'
