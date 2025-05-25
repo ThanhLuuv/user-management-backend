@@ -5,17 +5,14 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 
 // Public routes
-Route::get('health-check', fn () => response()->json(['status' => 'ok']));
-
-Route::get('/cicd-test', function () {
-    return 'CI/CD is working!';
-});
+Route::get('cicd', fn () => response()->json(['status' => 'ok']));
 
 
 // Auth routes (public)
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::get('test-ci', fn () => response()->json(['status' => 'ok']));
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
 });
