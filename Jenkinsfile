@@ -99,7 +99,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'lvthanhwork/backend-laravel'
+        IMAGE_NAME = 'lvthanhwork/backend-laravel:backend'
     }
 
     stages {
