@@ -52,7 +52,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'lvthanhword/backend-laravel'
+        IMAGE_NAME = 'lvthanhwork/backend-laravel'
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-creds')
         RENDER_DEPLOY_HOOK = credentials('render-api-key')
     }
