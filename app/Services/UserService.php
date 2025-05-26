@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Account;
 use App\Traits\Loggable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -13,13 +14,13 @@ class UserService
 
     /**
      * Get all users with their profiles
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllUsers()
     {
         try {
-            return Account::with('profile')->get();
+            return Account::with(['profile', 'role'])->get();
         } catch (\Exception $e) {
             $this->logError($e, ['action' => 'getAllUsers']);
             throw $e;
@@ -28,7 +29,7 @@ class UserService
 
     /**
      * Get specific user data
-     * 
+     *
      * @param Account $account
      * @return array
      */
@@ -47,7 +48,7 @@ class UserService
 
     /**
      * Update user information
-     * 
+     *
      * @param Account $account
      * @param array $data
      * @return array
@@ -55,8 +56,22 @@ class UserService
     public function updateUser(Account $account, array $data)
     {
         try {
+            Log::info('Updating user', [
+                'action' => 'updateUser',
+                'user_id' => $account->id,
+                'requester_id' => Auth::id(),
+                'input_data' => $data
+            ]);
+            /** @var Account $currentUser */
+            $currentUser = Auth::user();
+
+            // Load role relationship if not loaded
+            if ($currentUser && !$currentUser->relationLoaded('role')) {
+                $currentUser->load('role');
+            }
+
             // Kiểm tra quyền: chỉ admin hoặc chính user đó mới được cập nhật
-            if (!Auth::user()->isAdmin() && Auth::id() !== $account->id) {
+            if (!$currentUser?->isAdmin() && Auth::id() !== $account->id) {
                 $this->logError(new ValidationException(null, null, [
                     'permission' => ['You do not have permission to update this user.']
                 ]), [
@@ -71,7 +86,6 @@ class UserService
 
             // Cập nhật thông tin account
             $account->update([
-                'name' => $data['name'] ?? $account->name,
                 'email' => $data['email'] ?? $account->email,
                 'role' => $data['role'] ?? $account->role,
             ]);
@@ -79,6 +93,7 @@ class UserService
             // Cập nhật thông tin profile
             if ($account->profile) {
                 $account->profile->update([
+                    'name' => $data['name'] ?? $account->profile->name,
                     'phone' => $data['phone'] ?? $account->profile->phone,
                     'address' => $data['address'] ?? $account->profile->address,
                     'city' => $data['city'] ?? $account->profile->city,
@@ -104,7 +119,7 @@ class UserService
 
             // Refresh relationship để lấy dữ liệu mới nhất
             $account->refresh();
-            $account->load('profile');
+            $account->loadMissing('profile');
 
             return [
                 'account' => $account,
@@ -122,15 +137,23 @@ class UserService
 
     /**
      * Delete user
-     * 
+     *
      * @param Account $account
      * @return void
      */
     public function deleteUser(Account $account)
     {
         try {
+            /** @var Account $currentUser */
+            $currentUser = Auth::user();
+
+            // Load role relationship if not loaded
+            if ($currentUser && !$currentUser->relationLoaded('role')) {
+                $currentUser->load('role');
+            }
+
             // Kiểm tra quyền: chỉ admin hoặc chính user đó mới được xóa
-            if (!Auth::user()->isAdmin() && Auth::id() !== $account->id) {
+            if (!$currentUser?->isAdmin() && Auth::id() !== $account->id) {
                 throw ValidationException::withMessages([
                     'permission' => ['You do not have permission to delete this user.'],
                 ]);
@@ -145,12 +168,13 @@ class UserService
 
     /**
      * Get current authenticated user profile
-     * 
+     *
      * @return array
      */
     public function getCurrentUserProfile()
     {
         try {
+            /** @var Account $account */
             $account = Auth::user();
             if (!$account) {
                 throw new \Exception('User not found');
@@ -158,7 +182,7 @@ class UserService
 
             // Load profile relationship if not already loaded
             if (!$account->relationLoaded('profile')) {
-                $account->load('profile');
+                $account->loadMissing('profile');
             }
 
             return [
@@ -173,15 +197,23 @@ class UserService
 
     /**
      * Create new user account
-     * 
+     *
      * @param array $data
      * @return array
      */
     public function createUser(array $data)
     {
         try {
+            /** @var Account $currentUser */
+            $currentUser = Auth::user();
+
+            // Load role relationship if not loaded
+            if ($currentUser && !$currentUser->relationLoaded('role')) {
+                $currentUser->load('role');
+            }
+
             // Chỉ admin mới được tạo user mới
-            if (!Auth::user()->isAdmin()) {
+            if (!$currentUser?->isAdmin()) {
                 throw ValidationException::withMessages([
                     'permission' => ['You do not have permission to create users.'],
                 ]);
@@ -208,7 +240,7 @@ class UserService
                 ]);
             }
 
-            $account->load('profile');
+            $account->loadMissing('profile');
 
             return [
                 'account' => $account,
@@ -222,4 +254,6 @@ class UserService
             throw $e;
         }
     }
+
+
 }

@@ -146,7 +146,7 @@ class UserController extends Controller
                 'ward' => 'nullable|string|max:255',
                 'date_of_birth' => 'nullable|date',
                 'gender' => 'nullable|in:male,female,other',
-                'avatar' => 'nullable|url|max:255',
+                // 'avatar' => 'nullable|url|max:255',
             ];
 
             if ($user && $user->isAdmin()) {

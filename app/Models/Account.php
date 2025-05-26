@@ -8,10 +8,14 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
- * @property \App\Models\Role $role
+ * App\Models\Account
+ *
+ * @property-read \App\Models\Role|null $role
+ * @property-read \App\Models\UserProfile|null $profile
  * @method bool isAdmin()
  * @method bool isUser()
  */
+
 class Account extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -26,9 +30,9 @@ class Account extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',
+    // ];
 
     public function role()
     {

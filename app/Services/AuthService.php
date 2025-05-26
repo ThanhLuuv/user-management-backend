@@ -112,8 +112,6 @@ class AuthService
 
             return [
                 'account' => $account,
-                'profile' => $account->profile,
-                'role' => $account->role,
                 'token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => JWTAuth::factory()->getTTL() * 60
