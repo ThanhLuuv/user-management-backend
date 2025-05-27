@@ -32,7 +32,7 @@ COPY resources ./resources
 COPY routes ./routes
 COPY storage ./storage
 COPY artisan ./
-COPY .env.example .env
+# COPY .env.example .env
 
 # Cài đặt dependencies Laravel
 RUN composer install --no-dev --optimize-autoloader
