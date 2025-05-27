@@ -85,28 +85,15 @@ class AuthService
     public function login(array $credentials): array
     {
         try {
-            $account = Account::where('email', $credentials['email'])->first();
-
-            if (!$account || !Hash::check($credentials['password'], $account->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['Invalid credentials.'],
-                ]);
-            }
-
-            // if (!$account->is_active) {
-            //     throw ValidationException::withMessages([
-            //         'email' => ['Account is inactive. Contact admin.'],
-            //     ]);
-            // }
-
             $token = JWTAuth::attempt($credentials);
 
             if (!$token) {
                 throw ValidationException::withMessages([
-                    'email' => ['Login failed.'],
+                    'email' => ['Email or password is invalid.'],
                 ]);
             }
 
+            $account = Account::where('email', $credentials['email'])->firstOrFail();
             $account->update(['last_login_at' => now()]);
             $account->load(['profile', 'role']);
 
@@ -116,12 +103,14 @@ class AuthService
                 'token_type' => 'bearer',
                 'expires_in' => JWTAuth::factory()->getTTL() * 60
             ];
+
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
             throw new \Exception('Login failed. Please try again.');
         }
     }
+
 
     public function logout(): void
     {

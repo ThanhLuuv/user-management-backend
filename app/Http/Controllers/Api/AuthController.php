@@ -100,7 +100,7 @@ class AuthController extends Controller
                 ], 400);
             }
 
-            $result = $this->authService->login($request->all());
+            $result = $this->authService->login($request->only(['email', 'password']));
 
             return response()->json([
                 'status' => 'success',
@@ -117,10 +117,11 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Server error. Please try again later.'
+                'message' => $e->getMessage() ?? 'Server error. Please try again later.'
             ], 500);
         }
     }
+
 
     /**
      * Logout user
