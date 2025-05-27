@@ -111,7 +111,7 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid credentials',
+                'message' => 'Email or password is invalid',
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
