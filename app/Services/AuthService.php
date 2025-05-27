@@ -20,11 +20,11 @@ class AuthService
         DB::beginTransaction();
 
         try {
-            if (Account::where('email', $data['email'])->exists()) {
-                throw ValidationException::withMessages([
-                    'email' => ['This email is already registered.']
-                ]);
-            }
+            // if (Account::where('email', $data['email'])->exists()) {
+            //     throw ValidationException::withMessages([
+            //         'email' => ['This email is already registered.']
+            //     ]);
+            // }
 
             if (!empty($data['phone']) && UserProfile::where('phone', $data['phone'])->exists()) {
                 throw ValidationException::withMessages([

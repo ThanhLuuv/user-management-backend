@@ -27,16 +27,16 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
-            // // Check if email already exists
-            // if (Account::where('email', $request->email)->exists()) {
-            //     return response()->json([
-            //         'status' => 'error',
-            //         'message' => 'Email already in use',
-            //         'errors' => [
-            //             'email' => ['This email is already registered']
-            //         ]
-            //     ], 422);
-            // }
+            // Check if email already exists
+            if (Account::where('email', $request->email)->exists()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Email already in use',
+                    'errors' => [
+                        'email' => ['This email is already registered']
+                    ]
+                ], 422);
+            }
 
             // $message = [
             //     'email.unique' => 'This email is already registered.'
