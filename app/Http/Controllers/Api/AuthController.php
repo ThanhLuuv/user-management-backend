@@ -38,10 +38,6 @@ class AuthController extends Controller
                 ], 422);
             }
 
-            // $message = [
-            //     'email.unique' => 'This email is already registered.'
-            // ],
-
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
@@ -73,7 +69,8 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Server error. Please try again later.'
+                'message' => 'Server error. Please try again later.',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
@@ -117,7 +114,8 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage() ?? 'Server error. Please try again later.'
+                'message' => 'Server error. Please try again later.',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }

@@ -26,12 +26,6 @@ class AuthService
             //     ]);
             // }
 
-            if (!empty($data['phone']) && UserProfile::where('phone', $data['phone'])->exists()) {
-                throw ValidationException::withMessages([
-                    'phone' => ['This phone number is already registered.']
-                ]);
-            }
-
             $role = Role::firstOrCreate([
                 'name' => 'user'
             ], [
