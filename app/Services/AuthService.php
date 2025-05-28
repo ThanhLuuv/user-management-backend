@@ -101,7 +101,8 @@ class AuthService
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
-            throw new \Exception('Login failed. Please try again.');
+            throw new \Exception($e);
+            // throw new \Exception('Login failed. Please try again.');
         }
     }
 
