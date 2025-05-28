@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# Đợi database sẵn sàng
-echo "Waiting for database..."
-while ! nc -z mysql 3306; do
+# Dùng biến DB_HOST nếu có, nếu không thì mặc định là "mysql"
+DB_HOST=${DB_HOST:-mysql}
+DB_PORT=${DB_PORT:-3306}
+
+echo "Waiting for database at $DB_HOST:$DB_PORT..."
+while ! nc -z $DB_HOST $DB_PORT; do
   sleep 1
 done
 echo "Database is ready!"
